@@ -1189,11 +1189,13 @@ unsigned int static GetNextWorkRequired(const CBlockIndex* pindexLast, const CBl
 
 	blockstogoback = nAInterval-1;
 
-	if (pindexLast->nHeight != nRulesAHeight)
+	// that part is always true, but should be needed at retarget?
+	/*if (pindexLast->nHeight != nRulesAHeight)
 	{
 	    blockstogoback = pindexLast->nHeight - 40320;
 	}
-	else if ((pindexLast->nHeight+1) != nAInterval)
+	else*/
+	if ((pindexLast->nHeight+1) != nAInterval)
 	{
 	    blockstogoback = nAInterval;
 	}
