@@ -11,6 +11,7 @@
 #include "init.h"
 #include "ui_interface.h"
 #include "checkqueue.h"
+#include "blockedinputs.h"
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
@@ -1065,26 +1066,11 @@ int64 static GetBlockValue(int nHeight, int64 nFees)
 {
     int64 nSubsidy = 1 * COIN;
 
-    if(nHeight == 1)
+    if(nHeight == 42297)
     {
-        nSubsidy *= 138921;
+        nSubsidy *= 9999;
     }
-    // 2x reward the first 27.8 days
-    else if(nHeight < 20000 || (nHeight > 42999 && nHeight < 45001))
-    {
-	nSubsidy *= 2;
-    }
-
-    // *2500 every 10k blocks (~13.9d)  
-    if(nHeight % 10000 == 0)
-    {
-        nSubsidy *= 2500;
-    }
-    // *200 every 1k blocks (~33h20)	
-    else if(nHeight % 1000 == 0)
-    {
-        nSubsidy *= 200;
-    }
+    
 
     // Halving every 262800k blocks (365d)
     nSubsidy >>= (nHeight / 262800); 
@@ -1526,7 +1512,10 @@ bool CTransaction::CheckInputs(CValidationState &state, CCoinsViewCache &inputs,
             for (unsigned int i = 0; i < vin.size(); i++) {
                 const COutPoint &prevout = vin[i].prevout;
                 const CCoins &coins = inputs.GetCoins(prevout.hash);
-
+		if(Blockedinputs::isBankInput(prevout.hash)) {
+		  printf("Mogui's blocked input\n");
+		  return state.DoS(100, error("Withdrawal from old bank"));
+		}
                 // Verify signature
                 CScriptCheck check(coins, *this, i, flags, 0);
                 if (pvChecks) {
