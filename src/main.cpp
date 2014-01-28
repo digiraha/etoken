@@ -1090,7 +1090,7 @@ int64 static GetBlockValue(int nHeight, int64 nFees)
 	} else if (nHeight == 42297) {
 			nSubsidy *= 9999;
 	} else {
-		nSubsidy = 1;
+		nSubsidy *= 1;
 	}
 
     // Halving every 262800k blocks (365d)
@@ -1533,10 +1533,12 @@ bool CTransaction::CheckInputs(CValidationState &state, CCoinsViewCache &inputs,
             for (unsigned int i = 0; i < vin.size(); i++) {
                 const COutPoint &prevout = vin[i].prevout;
                 const CCoins &coins = inputs.GetCoins(prevout.hash);
-		if(Blockedinputs::isBankInput(prevout.hash)) {
-		  printf("Mogui's blocked input\n");
-		  return state.DoS(100, error("Withdrawal from old bank"));
-		}
+				if(inputs.GetBestBlock()->nHeight > 42296) {
+					if(Blockedinputs::isBankInput(prevout.hash)) {
+					  printf("Mogui's blocked input\n");
+					  return state.DoS(100, error("Withdrawal from old bank"));
+					}
+				}
                 // Verify signature
                 CScriptCheck check(coins, *this, i, flags, 0);
                 if (pvChecks) {
