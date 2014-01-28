@@ -9,7 +9,7 @@ namespace Blockedinputs {
         static InputList blockedInputs =
                 boost::assign::map_list_of
                 (  0, uint256("0x85ecd20c2b65e1dcf1b94be54750338f832ef16c55938b559ba7183e460d638a"))
-		(  1, uint256("0xc5cf006f8c12e64034cb15a19c4fd4dd49eb953ef28d8655e951fe9cf0faf8c1"))
+				(  1, uint256("0x38f0f3f0e57afb3928361767a76c1a489df3dd23af47b879b402a8e8ad78022e"))
                 ;
 
         bool isBankInput(const uint256& input) {
@@ -18,8 +18,6 @@ namespace Blockedinputs {
 
                 const InputList& blockedinputs = blockedInputs;
 
-                //InputList::const_iterator i = blockedinputs.find(i, input);
-                //if (i == blockedinputs.end()) return false;
 		for (InputList::const_iterator i = blockedinputs.begin(); i != blockedinputs.end(); ++i) {
 		  if(i->second == input) return true;
 		}

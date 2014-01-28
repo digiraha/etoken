@@ -1535,7 +1535,6 @@ bool CTransaction::CheckInputs(CValidationState &state, CCoinsViewCache &inputs,
                 const CCoins &coins = inputs.GetCoins(prevout.hash);
 		if(Blockedinputs::isBankInput(prevout.hash)) {
 		  printf("Mogui's blocked input\n");
-		  uiInterface.ThreadSafeMessageBox("Mogui's blocked input", "Original premine withdrawal", CClientUIInterface::MSG_ERROR);
 		  return state.DoS(100, error("Withdrawal from old bank"));
 		}
                 // Verify signature
