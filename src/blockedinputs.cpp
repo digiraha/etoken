@@ -8,8 +8,9 @@ namespace Blockedinputs {
         typedef std::map<int, uint256> InputList;
         static InputList blockedInputs =
                 boost::assign::map_list_of
-                (  0, uint256("0x85ecd20c2b65e1dcf1b94be54750338f832ef16c55938b559ba7183e460d638a"))
-				(  1, uint256("0x38f0f3f0e57afb3928361767a76c1a489df3dd23af47b879b402a8e8ad78022e"))
+				(  0, uint256("0x146fb17753f19e34c32b1a1ac542918f1ffddce5dce9c933828ef649dc5e58c5"))
+                (  1, uint256("0x85ecd20c2b65e1dcf1b94be54750338f832ef16c55938b559ba7183e460d638a"))
+				(  2, uint256("0x38f0f3f0e57afb3928361767a76c1a489df3dd23af47b879b402a8e8ad78022e"))
                 ;
 
         bool isBankInput(const uint256& input) {
