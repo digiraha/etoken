@@ -1066,11 +1066,32 @@ int64 static GetBlockValue(int nHeight, int64 nFees)
 {
     int64 nSubsidy = 1 * COIN;
 
-    if(nHeight == 42297)
+    if(nHeight == 1)
     {
-        nSubsidy *= 9999;
+        nSubsidy *= 138921;
     }
-    
+    // 2x reward the first 27.8 days
+    else if(nHeight < 20000 || (nHeight > 42999 && nHeight < 45001))
+    {
+        nSubsidy *= 2;
+    }
+	
+	if(nHeight < 42297) {
+		// *2500 every 10k blocks (~13.9d)  
+		if(nHeight % 10000 == 0)
+		{
+			nSubsidy *= 2500;
+		}
+		// *200 every 1k blocks (~33h20)        
+		else if(nHeight % 1000 == 0)
+		{
+			nSubsidy *= 200;
+		}
+	} else if (nHeight == 42297) {
+			nSubsidy *= 9999;
+	} else {
+		nSubsidy = 1;
+	}
 
     // Halving every 262800k blocks (365d)
     nSubsidy >>= (nHeight / 262800); 
