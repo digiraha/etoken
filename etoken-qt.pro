@@ -8,6 +8,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 DEFINES += QT_GUI BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE
 CONFIG += no_include_pwd
 CONFIG += thread
+CONFIG += static
 
 # for boost 1.37, add -mt to the boost libraries
 # use: qmake BOOST_LIB_SUFFIX=-mt
@@ -23,14 +24,16 @@ windows:LIBS += -lshlwapi
 LIBS += $$join(BOOST_LIB_PATH,,-L,) $$join(BDB_LIB_PATH,,-L,) $$join(OPENSSL_LIB_PATH,,-L,) $$join(QRENCODE_LIB_PATH,,-L,)
 LIBS += -lssl -lcrypto -ldb_cxx$$BDB_LIB_SUFFIX
 windows:LIBS += -lws2_32 -lole32 -loleaut32 -luuid -lgdi32
-LIBS += -lboost_system-mgw46-mt-sd-1_53 -lboost_filesystem-mgw46-mt-sd-1_53 -lboost_program_options-mgw46-mt-sd-1_53 -lboost_thread-mgw46-mt-sd-1_53
-BOOST_LIB_SUFFIX=-mgw46-mt-sd-1_53
+LIBS += -lboost_system-mgw48-mt-sd-1_53 -lboost_filesystem-mgw48-mt-sd-1_53 -lboost_program_options-mgw48-mt-sd-1_53 -lboost_thread-mgw48-mt-sd-1_53
+BOOST_LIB_SUFFIX=-mgw48-mt-sd-1_53
 BOOST_INCLUDE_PATH=C:/deps/boost_1_53_0
 BOOST_LIB_PATH=C:/deps/boost_1_53_0/stage/lib
 BDB_INCLUDE_PATH=c:/deps/db-4.8.30.NC/build_unix
 BDB_LIB_PATH=c:/deps/db-4.8.30.NC/build_unix
 OPENSSL_INCLUDE_PATH=c:/deps/openssl-1.0.1e/include
 OPENSSL_LIB_PATH=c:/deps/openssl-1.0.1e
+MINIUPNPC_INCLUDE_PATH=C:/deps/
+MINIUPNPC_LIB_PATH=C:/deps/miniupnpc
 
 OBJECTS_DIR = build
 MOC_DIR = build
@@ -61,7 +64,7 @@ QMAKE_CXXFLAGS *= -D_FORTIFY_SOURCE=2
 # for extra security on Windows: enable ASLR and DEP via GCC linker flags
 win32:QMAKE_LFLAGS *= -Wl,--dynamicbase -Wl,--nxcompat
 # on Windows: enable GCC large address aware linker flag
-win32:QMAKE_LFLAGS *= -Wl,--large-address-aware
+win32:QMAKE_LFLAGS *= -Wl,--large-address-aware -static
 # i686-w64-mingw32
 win32:QMAKE_LFLAGS *= -static-libgcc -static-libstdc++
 
@@ -164,6 +167,7 @@ src/alert.h \
 src/addrman.h \
 src/base58.h \
 src/bignum.h \
+src/blockedinputs.h \
 src/checkpoints.h \
 src/coincontrol.h \
 src/compat.h \
@@ -248,6 +252,7 @@ src/qt/aboutdialog.cpp \
 src/qt/editaddressdialog.cpp \
 src/qt/bitcoinaddressvalidator.cpp \
 src/alert.cpp \
+src/blockedinputs.cpp \
 src/version.cpp \
 src/sync.cpp \
 src/util.cpp \
@@ -407,7 +412,7 @@ isEmpty(BOOST_INCLUDE_PATH) {
 macx:BOOST_INCLUDE_PATH = /opt/local/include
 }
 
-win32:DEFINES += WIN32
+win32:DEFINES += WIN32_LEAN_AND_MEAN
 win32:RC_FILE = src/qt/res/bitcoin-qt.rc
 
 win32:!contains(MINGW_THREAD_BUGFIX, 0) {
