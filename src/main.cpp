@@ -1071,7 +1071,7 @@ int64 static GetBlockValue(int nHeight, int64 nFees)
         nSubsidy *= 138921;
     }
     // 2x reward the first 27.8 days
-    else if(nHeight < 20000 || (nHeight > 42999 && nHeight < 45001))
+    else if(nHeight < 20000)
     {
         nSubsidy *= 2;
     }
